@@ -10,7 +10,7 @@ using namespace std;
 
 bool is_prime(int n) {
     if (n <= 1) return false;
-    for (int p = 2; p * p <= n; ++p) {
+    for (int p = 2; p * p <= n; p++) {
         if (n % p == 0) return false;
     }
     return true;
@@ -33,8 +33,8 @@ vector<vector<int>> construct_power_of_two_hadamard(int n) {
     while (H.size() < n) {
         int m = H.size();
         vector<vector<int>> new_H(2 * m, vector<int>(2 * m));
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < m; ++j) {
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < m; j++) {
                 new_H[i][j] = H[i][j];
                 new_H[i][j + m] = H[i][j];
                 new_H[i + m][j] = H[i][j];
@@ -48,21 +48,21 @@ vector<vector<int>> construct_power_of_two_hadamard(int n) {
 
 vector<vector<int>> construct_q_plus_one_hadamard(int n, int q) {
     vector<int> chi(q, 0);
-    for (int x = 1; x < q; ++x) {
+    for (int x = 1; x < q; x++) {
         chi[(x * x) % q] = 1;
     }
     vector<vector<int>> Q(q, vector<int>(q));
-    for (int i = 0; i < q; ++i) {
-        for (int j = 0; j < q; ++j) {
+    for (int i = 0; i < q; i++) {
+        for (int j = 0; j < q; j++) {
             Q[i][j] = (i == j) ? 0 : (chi[(i - j + q) % q] ? 1 : -1);
         }
     }
 
     vector<vector<int>> H(n, vector<int>(n, 1));
-    for (int i = 1; i < n; ++i) {
+    for (int i = 1; i < n; i++) {
         H[0][i] = 1;
         H[i][0] = -1;
-        for (int j = 1; j < n; ++j) {
+        for (int j = 1; j < n; j++) {
             H[i][j] = Q[i - 1][j - 1];
         }
         H[i][i] = 1;
@@ -75,38 +75,38 @@ vector<vector<int>> construct_two_q_plus_one_hadamard(int n, int q) {
 
     // Construct Q matrix for chi values
     vector<int> chi(q, 0);
-    for (int x = 1; x < q; ++x) {
+    for (int x = 1; x < q; x++) {
         chi[(x * x) % q] = 1;
     }
     vector<vector<int>> Q(q, vector<int>(q));
-    for (int i = 0; i < q; ++i) {
-        for (int j = 0; j < q; ++j) {
+    for (int i = 0; i < q; i++) {
+        for (int j = 0; j < q; j++) {
             Q[i][j] = (i == j) ? 0 : (chi[(i - j + q) % q] ? 1 : -1);
         }
     }
 
     // Construct C matrix
     vector<vector<int>> C(m, vector<int>(m));
-    for (int i = 1; i <= q; ++i) {
-        for (int j = 1; j <= q; ++j) {
+    for (int i = 1; i <= q; i++) {
+        for (int j = 1; j <= q; j++) {
             C[i][j] = Q[i - 1][j - 1];
         }
     }
-    for (int i = 1; i <= q; ++i) {
+    for (int i = 1; i <= q; i++) {
         C[0][i] = C[i][0] = 1;
     }
     C[0][0] = 0; // Top-left corner
 
     // Identity matrix I
     vector<vector<int>> I(m, vector<int>(m, 0));
-    for (int i = 0; i < m; ++i) {
+    for (int i = 0; i < m; i++) {
         I[i][i] = 1;
     }
 
     // Construct Hadamard matrix H
     vector<vector<int>> H(2 * m, vector<int>(2 * m));
-    for (int i = 0; i < m; ++i) {
-        for (int j = 0; j < m; ++j) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
             H[i][j] = C[i][j] + I[i][j];
             H[i][j + m] = C[i][j] - I[i][j];
             H[i + m][j] = C[i][j] - I[i][j];
