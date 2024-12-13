@@ -11,8 +11,8 @@ int main() {
     rows = n;
 
     vector<vector<int>> M(rows, vector<int>(cols));
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
             cin >> M[i][j];
         }
     }
@@ -21,8 +21,8 @@ int main() {
     vector<vector<int>> result(cols, vector<int>(cols, 0));
 
     // Obliczanie M^T * M
-    for (int i = 0; i < cols; ++i) {
-        for (int j = 0; j < cols; ++j) {
+    for (int i = 0; i < cols; i++) {
+        for (int j = 0; j < cols; j++) {
             for (int k = 0; k < rows; ++k) {
                 result[i][j] += M[k][i] * M[k][j];
             }
