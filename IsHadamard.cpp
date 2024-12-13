@@ -23,7 +23,7 @@ int main() {
     // Obliczanie M^T * M
     for (int i = 0; i < cols; i++) {
         for (int j = 0; j < cols; j++) {
-            for (int k = 0; k < rows; ++k) {
+            for (int k = 0; k < rows; k++) {
                 result[i][j] += M[k][i] * M[k][j];
             }
         }
