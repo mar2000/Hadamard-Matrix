@@ -1,3 +1,5 @@
+// Program działa poprawnie dla n, które jest potęgą liczby 2 lub jest postaci (p+1) dla p = 3 mod 4 lub 2(q+1) dla p = 1 mod 4, gdzie p jest liczbą pierwszą.
+
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -52,49 +54,69 @@ vector<vector<int>> construct_q_plus_one_hadamard(int n, int q) {
     vector<vector<int>> Q(q, vector<int>(q));
     for (int i = 0; i < q; ++i) {
         for (int j = 0; j < q; ++j) {
-            Q[i][j] = (i == j) ? -1 : (chi[(i - j + q) % q] ? 1 : -1);
+            Q[i][j] = (i == j) ? 0 : (chi[(i - j + q) % q] ? 1 : -1);
         }
     }
 
     vector<vector<int>> H(n, vector<int>(n, 1));
     for (int i = 1; i < n; ++i) {
-        H[0][i] = H[i][0] = 1;
+        H[0][i] = 1;
+        H[i][0] = -1;
         for (int j = 1; j < n; ++j) {
             H[i][j] = Q[i - 1][j - 1];
         }
+        H[i][i] = 1;
     }
     return H;
 }
 
 vector<vector<int>> construct_two_q_plus_one_hadamard(int n, int q) {
     int m = q + 1;
-    vector<vector<int>> C(m, vector<int>(m));
 
+    // Construct Q matrix for chi values
     vector<int> chi(q, 0);
     for (int x = 1; x < q; ++x) {
         chi[(x * x) % q] = 1;
     }
+    vector<vector<int>> Q(q, vector<int>(q));
     for (int i = 0; i < q; ++i) {
         for (int j = 0; j < q; ++j) {
-            C[i + 1][j + 1] = (i == j) ? -1 : (chi[(i - j + q) % q] ? 1 : -1);
+            Q[i][j] = (i == j) ? 0 : (chi[(i - j + q) % q] ? 1 : -1);
+        }
+    }
+
+    // Construct C matrix
+    vector<vector<int>> C(m, vector<int>(m));
+    for (int i = 1; i <= q; ++i) {
+        for (int j = 1; j <= q; ++j) {
+            C[i][j] = Q[i - 1][j - 1];
         }
     }
     for (int i = 1; i <= q; ++i) {
         C[0][i] = C[i][0] = 1;
     }
+    C[0][0] = 0; // Top-left corner
 
+    // Identity matrix I
+    vector<vector<int>> I(m, vector<int>(m, 0));
+    for (int i = 0; i < m; ++i) {
+        I[i][i] = 1;
+    }
+
+    // Construct Hadamard matrix H
     vector<vector<int>> H(2 * m, vector<int>(2 * m));
     for (int i = 0; i < m; ++i) {
         for (int j = 0; j < m; ++j) {
-            H[i][j] = C[i][j];
-            H[i][j + m] = C[i][j];
-            H[i + m][j] = C[i][j];
-            H[i + m][j + m] = -C[i][j];
+            H[i][j] = C[i][j] + I[i][j];
+            H[i][j + m] = C[i][j] - I[i][j];
+            H[i + m][j] = C[i][j] - I[i][j];
+            H[i + m][j + m] = -(C[i][j] + I[i][j]);
         }
     }
 
     return H;
 }
+
 
 vector<vector<int>> construct_hadamard(int n) {
     assert(is_valid_hadamard_order(n));
@@ -138,3 +160,6 @@ int main() {
 
     return 0;
 }
+
+// Działające rozmiary n in {2, 4, 8, 12, 16, 20, 24, 28, 32, 36, 44, 48, 60, 64, 68, 72, 76, 80, 84}
+// Niedziałąjące rozmiary n in {28, 36, 40, 52, 56, 76, 88, 92, 96, 100}
