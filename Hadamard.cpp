@@ -162,4 +162,4 @@ int main() {
 }
 
 // Działające rozmiary n in {2, 4, 8, 12, 16, 20, 24, 28, 32, 36, 44, 48, 60, 64, 68, 72, 76, 80, 84}
-// Niedziałąjące rozmiary n in {28, 36, 40, 52, 56, 76, 88, 92, 96, 100}
+// Niedziałąjące rozmiary n in {40, 52, 56, 88, 92, 96, 100}
