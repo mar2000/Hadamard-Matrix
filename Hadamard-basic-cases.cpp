@@ -62,37 +62,6 @@ vector<vector<int>> construct_power_of_two_hadamard(int n) {
 }
 
 
-// Funkcja generująca ciało GF(p)
-vector<int> generate_field(int p) {
-    vector<int> field(p);
-    for (int i = 0; i < p; ++i) field[i] = i;
-    return field;
-}
-
-// Funkcja do obliczenia znaku kwadratowego w GF(q)
-int quadratic_character(int a, int q) {
-    if (a == 0) return 0;
-    for (int b = 1; b < q; b++) {
-        if ((b * b) % q == a) return 1;
-    }
-    return -1;
-}
-
-// Funkcja generująca macierz Jakobstala
-vector<vector<int>> generate_jacobsthal_matrix(int q) {
-    vector<int> field = generate_field(q);
-    vector<vector<int>> jacobsthal_matrix(q, vector<int>(q, 0));
-
-    for (int i = 0; i < q; ++i) {
-        for (int j = 0; j < q; ++j) {
-            int diff = (field[i] - field[j] + q) % q;
-            jacobsthal_matrix[i][j] = quadratic_character(diff, q);
-        }
-    }
-
-    return jacobsthal_matrix;
-}
-
 // Funkcja generująca elementy ciała GF(p^m)
 vector<vector<int>> generateField(int p, int m) {
     int fieldSize = pow(p, m);
