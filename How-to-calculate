@@ -1,0 +1,9 @@
+Dziające rozmiary n in {2, 4, 8, 12, 16, 20, 24, 28, 32, 36, 44, 48, 60, 64, 68, 72, 76, 80, 84}
+Niedziałąjące rozmiary n in {40, 52, 56, 88, 92, 96, 100}
+40 = 2 * 20 - można policzyć z iloczynu Kroneckera
+52 = 2 * (5^2 + 1) - można policzyć z 2. konstrukcji Paleya q=5
+56 = 2 * 28 - można policzyć z iloczynu Kroneckeranie można
+88 = 2 * 44 - można policzyć z iloczynu Kroneckeraie można
+92 - nie można
+96 = 2 * 48 - można policzyć z iloczynu Kroneckera
+100 = 2 * (7^2 + 1) - można policzyć z 2. konstrukcji Paleya q=7
