@@ -1,4 +1,4 @@
-// Program działa poprawnie dla n, które jest potęgą liczby 2 lub jest postaci (p+1) dla p = 3 mod 4 lub 2(q+1) dla p = 1 mod 4, gdzie p jest liczbą pierwszą.
+// Program działa poprawnie dla n, które jest potęgą liczby 2 lub jest postaci (p+1) dla p = 3 mod 4 lub 2(p+1) dla p = 1 mod 4, gdzie p jest liczbą pierwszą.
 
 #include <iostream>
 #include <vector>
