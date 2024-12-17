@@ -29,13 +29,34 @@ int main() {
         }
     }
 
-    // Wyświetlenie wyniku
-    for (const auto& row : result) {
-        for (int value : row) {
-            cout << value << " ";
+     bool isValid = true;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (i == j) {
+                if (result[i][j] != n) {
+                    isValid = false;
+                }
+            } else {
+                if (result[i][j] != 0) {
+                    isValid = false;
+                }
+            }
         }
-        cout << endl;
     }
+
+    if (isValid) {
+        cout << "Okej" << endl;
+    } else {
+        cout << "Nie okej" << endl;
+    }
+
+    // Wyświetlenie wyniku
+    // for (const auto& row : result) {
+    //     for (int value : row) {
+    //         cout << value << " ";
+    //     }
+    //     cout << endl;
+    // }
 
     return 0;
 }
