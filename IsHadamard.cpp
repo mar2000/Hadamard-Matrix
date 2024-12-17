@@ -29,7 +29,8 @@ int main() {
         }
     }
 
-     bool isValid = true;
+    // Sprawdzenie czy macierz M jest Hadamarda
+    bool isValid = true;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             if (i == j) {
