@@ -1,4 +1,3 @@
-// Program działa poprawnie dla n, które jest potęgą liczby 2 lub jest postaci (q+1) dla q = 3 mod 4 lub 2(q+1) dla q = 1 mod 4, gdzie q=p^m i p jest liczbą pierwszą.
 
 #include <iostream>
 #include <vector>
@@ -122,16 +121,6 @@ vector<Polynomial> generateFieldElements(int p, int m) {
     return elements;
 }
 
-// Funkcja do sprawdzania, czy wielomian jest resztą kwadratową
-// bool isQuadraticResidue(const Polynomial& diff, const vector<Polynomial>& remainders) {
-//     for (const Polynomial& r : remainders) {
-//         if (diff == r) {
-//             return true;
-//         }
-//     }
-//     return false;
-// }
-
 // Funkcja do obliczania wielomianu -r modulo p
 Polynomial negatePolynomial(const Polynomial& poly, int p) {
     Polynomial negated = poly;
@@ -194,9 +183,8 @@ vector<vector<int>> generateJacobianMatrix(const vector<Polynomial>& fieldElemen
 }
 
 
-
-vector<int> find_irreducible_polynomial(int p, int m) {
     // Nieredukowalne wielomiany dla różnych przypadków
+vector<int> find_irreducible_polynomial(int p, int m) {
     if (m == 1) {
         return {1, 1};
     }
@@ -204,17 +192,19 @@ vector<int> find_irreducible_polynomial(int p, int m) {
         if (p == 2) return {1, 1, 1};       // x^2 + x + 1
         if (p == 3) return {1, 0, 1};       // x^2 + 1
         if (p == 5) return {1, 0, 2};       // x^2 + 2
-        if (p == 7) return {1, 0, 3};       // x^2 + 3
-        if (p == 11) return {1, 0, 2};      // x^2 + 2
+        if (p == 7) return {1, 0, 1};       // x^2 + 1
+        if (p == 11) return {1, 0, 1};      // x^2 + 1
         if (p == 13) return {1, 0, 2};      // x^2 + 2
-        if (p == 17) return {1, 0, 3};      // x^2 + 3
+        if (p == 17) return {1, 1, 1};      // x^2 + x + 1
+        if (p == 19) return {1, 0, 1};      // x^2 + 1
     } else if (m == 3) {
+        if (p == 2) return {1, 0, 1, 1};    // x^3 + x + 1
         if (p == 3) return {1, 0, 2, 1};    // x^3 + 2x + 1
         if (p == 5) return {1, 0, 2, 1};    // x^3 + 2x + 1
         if (p == 7) return {1, 0, 2, 1};    // x^3 + 2x + 1
     }
     
-    throw runtime_error("Nieredukowalny wielomian nie został zdefiniowany dla podanych p i m");
+    throw runtime_error("");
 }
 
 
@@ -236,6 +226,7 @@ vector<vector<int>> construct_q_plus_one_hadamard(int n, int p, int m) {
     // Generowanie macierzy Jacobsthala
     vector<vector<int>> Q = generateJacobianMatrix(fieldElements, remainders, p);
 
+    // Konstrukcja macierzy    
     vector<vector<int>> H(n, vector<int>(n, 1));
     for (int i = 1; i < n; i++) {
         H[0][i] = 1;
@@ -267,7 +258,7 @@ vector<vector<int>> construct_two_q_plus_one_hadamard(int n, int p, int m) {
     vector<vector<int>> Q = generateJacobianMatrix(fieldElements, remainders, p);
     int sizer = pow(p, m) + 1;
         
-    // Construct C matrix
+    // Konstrukcja macierzy C
     vector<vector<int>> C(sizer, vector<int>(sizer));
     for (int i = 1; i <= sizer - 1; i++) {
         for (int j = 1; j <= sizer - 1; j++) {
@@ -279,13 +270,13 @@ vector<vector<int>> construct_two_q_plus_one_hadamard(int n, int p, int m) {
     }
     C[0][0] = 0; 
 
-    // Identity matrix I
+    // Konstrukcja macierzy I
     vector<vector<int>> I(sizer, vector<int>(sizer, 0));
     for (int i = 0; i < sizer; i++) {
         I[i][i] = 1;
     }
 
-    // Construct Hadamard matrix H
+    // Konstrukcja macierzy H
     vector<vector<int>> H(2 * (sizer), vector<int>(2 * (sizer)));
     for (int i = 0; i < sizer; i++) {
         for (int j = 0; j < sizer; j++) {
@@ -300,7 +291,33 @@ vector<vector<int>> construct_two_q_plus_one_hadamard(int n, int p, int m) {
 }
 
 
+// Funkcja obliczająca iloczyn Kroneckera macierzy A i B
+vector<vector<int>> kroneckerProduct(const vector<vector<int>>& A, const vector<vector<int>>& B) {
+    int rowsA = A.size();
+    int colsA = A[0].size();
+    int rowsB = B.size();
+    int colsB = B[0].size();
 
+    // Wymiary wyniku
+    int rowsResult = rowsA * rowsB;
+    int colsResult = colsA * colsB;
+
+    // Macierz wynikowa
+    vector<vector<int>> result(rowsResult, vector<int>(colsResult, 0));
+
+    // Obliczanie iloczynu Kroneckera
+    for (int i = 0; i < rowsA; ++i) {
+        for (int j = 0; j < colsA; ++j) {
+            for (int k = 0; k < rowsB; ++k) {
+                for (int l = 0; l < colsB; ++l) {
+                    result[i * rowsB + k][j * colsB + l] = A[i][j] * B[k][l];
+                }
+            }
+        }
+    }
+
+    return result;
+}
 
 
 
@@ -311,8 +328,11 @@ vector<vector<int>> construct_hadamard(int n) {
     if ((n & (n - 1)) == 0) { // Potęga 2
         return construct_power_of_two_hadamard(n);
     }
+    
+    
 
     int q, p, m;
+    
     q = n - 1;
     if (is_power_of_prime(q, p, m) && (q % 4 == 3)) { // q+1, q = 4k+3
         return construct_q_plus_one_hadamard(n, p, m);
@@ -322,8 +342,28 @@ vector<vector<int>> construct_hadamard(int n) {
     if (is_power_of_prime(q, p, m) && (q % 4 == 1)) { // 2(q+1), q = 4k+1
          return construct_two_q_plus_one_hadamard(n, p, m);
     }
+    
+    int power_of_two = 0;
+    while (n % 2 == 0) {
+        q = n - 1;
+        if (is_power_of_prime(q, p, m) && (q % 4 == 3)) {
+            vector<vector<int>> H_paleya = construct_q_plus_one_hadamard(n, p, m);
+            vector<vector<int>> H2_power = construct_power_of_two_hadamard(pow(2, power_of_two));
+            return kroneckerProduct(H2_power, H_paleya);
+        }
 
-    throw runtime_error("Invalid Hadamard Order");
+        q = n / 2 - 1;
+        if (is_power_of_prime(q, p, m) && (q % 4 == 1)) {
+            vector<vector<int>> H_paleya = construct_two_q_plus_one_hadamard(n, p, m);
+            vector<vector<int>> H2_power = construct_power_of_two_hadamard(pow(2, power_of_two));
+            return kroneckerProduct(H2_power, H_paleya);
+        }
+
+        n /= 2;
+        power_of_two++;
+    }
+
+    throw runtime_error("");
 }
 
 int main() {
@@ -337,17 +377,28 @@ int main() {
     
     try {
         vector<vector<int>> H = construct_hadamard(n);
-        for (const auto &row : H) {
-            for (int val : row) {
-                cout << val << " ";
+        vector<vector<int>> result(n, vector<int>(n, 0));
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    result[i][j] += H[k][i] * H[k][j];
+                }
             }
-            cout << endl;
+        }
+        
+        // vector<vector<int>> H = construct_hadamard(n);
+        for (const auto &row : H) {
+           for (int val : row) {
+               cout << val << " ";
+           }
+           cout << endl;
         }
     } catch (const runtime_error &e) {
         cout << "Invalid Hadamard order" << endl;
+        return 1;
     }
 
     return 0;
 }
-
 
