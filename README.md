@@ -8,4 +8,3 @@ Składa się z:
   - n jest iloczynem dwóch liczb dla których istnieją macierze Hadamarda o własnościach wyżej
 - programu IsHadamard.cpp sprawdzającego czy dana macierz jest macierzą Hadamarda
 - dokumentu How-to-calculate w którym są informacje o tym, jaki rząd macierzy jest liczony przez jaką funkcję oraz wymienione są rzędy dla których algorytm nie znajduje jeszcze macierzy
-- programu FindPolyminal.cpp który znajduje wielomian nierozkładalny stopnia m w Zp[x] 
