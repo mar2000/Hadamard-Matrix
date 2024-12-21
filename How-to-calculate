@@ -12,6 +12,9 @@ Poniższe są liczone z konstrukcji 1. Paleya dla m = 3:
 28 = 3^3 + 1         - q=3, m=3       - działa
 344 = 7^3 + 1        - q=7, m=3       - działa
 
+Poniższe są liczone z konstrukcji 1. Paleya dla m = 5:
+244 = 3^5 + 1        - q=3, m=5       - działa
+
 Poniższe są liczone z konstrukcji 2. Paleya dla m = 1
 36, 76, 124, 148, 196, 204, 220, 276, 300, 316, 364, 388, 396, 460, 484, 516, 540, 
 556, 628, 636, 676, 704, 708, 748, 780, 796, 804, 820, 844, 868, 900, 916, 924
@@ -19,7 +22,6 @@ Poniższe są liczone z konstrukcji 2. Paleya dla m = 1
 Poniższe są liczone z konstrukcji 2. Paleya dla m = 2:
 52 = 2 * (5^2 + 1)   - q=5, m=2       - działa
 100 = 2 * (7^2 + 1)  - q=7, m=2       - działa
-244 = 2 * (11^2 + 1) - q=11, m=2      - nie działa (błąd)
 340 = 2 * (13^2 + 1) - q=13, m=2      - działa
 580 = 2 * (17^2 + 1) - q=17, m=2      - działa
 724 = 2 * (19^2 + 1) - q=17, m=2      - działa
